@@ -1,16 +1,19 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
+import PostListReducer, { SET_LIST } from './PostList.reducer';
 
 const NewComponent = () => {
 
-  // Használunk egy belső state-et!
-  const [list, setList] = useState([]);
+  // Használjuk a userReducert, átadjuk neki a megírt reducert, és egy kezdőértéket
+  // A tömb első eleme a lista, 2. a dispatch, amivel beállítjuk a későbbi értéket.
+  const [reducerList, dispatch] = useReducer(PostListReducer, []);
 
-  // Axios segítségével letöltünk egy listát a felhőből HTTP hívás segítségével
   const fetchList = async () => {
     const url = 'https://jsonplaceholder.typicode.com/posts';
     const { data } = await axios.get(url);
-    setList(data); // Beállítjuk setteren keresztül a lista értékét!
+
+    // A komponens betöltődésekor belőjük a SET_LIST actiont, aminek átadjuk a letöldődött listát
+    dispatch({ type: SET_LIST, list: data });
   };
 
   const renderPost = (post, index) => {
@@ -21,17 +24,13 @@ const NewComponent = () => {
     );
   };
 
-  // Lefut 1x, amikor a komponens legenerálódik
   useEffect(() => {
     fetchList();
   }, []);
 
   return (
     <div>
-
-      {/* Betöltjük a listát, amikor már letöltődött az adat, a map-nek átadjuk a renderPostot, ami megcsinál mindent */}
-      {list.length > 0 && list.map(renderPost)}
-
+      {reducerList.length > 0 && reducerList.map(renderPost)}
     </div>
   );
 };
