@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import BookList from './BookList';
+import NewComponent from './NewComponent';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div>
-
-    {/* Beszúrtuk a BookList komponenst ide */}
-    <BookList />
-
+    <NewComponent />
   </div>
 );
