@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import BookTitle from './BookTitle';
 
 class Book extends Component {
 
@@ -9,7 +10,8 @@ class Book extends Component {
   };
 
   // Használjunk Array functiont, hogy elérjük a this-t!
-  onClickBook = (/** @type {string} */ title) => {
+  // az event változóval elérjük a natív onClick eseményt is
+  onClickBook = (/** @type {string} */ title) => (event) => {
     console.log('Klikkeltél a címre!');
 
     // Nem közvetlenül állítjuk a State-tet, hanem a setState segítségével!
@@ -34,9 +36,11 @@ class Book extends Component {
     return (
       <div>
 
-        <h4 onClick={() => this.onClickBook(title)}>{title}</h4>
+        {/* <h4 onClick={this.onClickBook(title)}>{title}</h4> */}
         {/* VAGY PARAMÉTER NÉLKÜL: <h4 onClick={this.onClickBook}>{title}</h4> */}
 
+        {/* Az onClickFunc-nel átadunk egy functiont egy másik komponensnek, amit majd a másik oldalon meghívunk! */}
+        <BookTitle title={title} onClickFunc={this.onClickBook} />
 
         <p>{snNumber}</p>
         <hr></hr>
