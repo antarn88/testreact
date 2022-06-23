@@ -1,51 +1,36 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-const NewComponent = (props) => {
+const NewComponent = () => {
 
-  // Használ egy "state" elemet 0 kezdőértékkel, counter névvel, setCounter setterrel. Ebből a sorból lehet több is!
-  const [counter, setCounter] = useState(0);
+  // Használunk egy belső state-et!
+  const [list, setList] = useState([]);
 
-  const increaseCounter = () => {
-    setCounter(counter + 1);
+  // Axios segítségével letöltünk egy listát a felhőből HTTP hívás segítségével
+  const fetchList = async () => {
+    const url = 'https://jsonplaceholder.typicode.com/posts';
+    const { data } = await axios.get(url);
+    setList(data); // Beállítjuk setteren keresztül a lista értékét!
   };
 
+  const renderPost = (post, index) => {
+    return (
+      <div key={index} className='post'>
+        <div>{post.title}</div>
+      </div>
+    );
+  };
 
-  // Ha csak simán használjuk a useEffect metódust, akkor inicializáláskor és minden egyes property változásnál le fog futni.
-  /*
+  // Lefut 1x, amikor a komponens legenerálódik
   useEffect(() => {
-    console.log('useEffect lefut minden prop változásnál');
-  });
-  */
-
-  // Csak inicializáláskor fut le!
-  /*
-  useEffect(() => {
-    console.log('Ha 2. paraméterként megkap egy üres tömböt, akkor csak inicializáláskor fog lefutni!');
+    fetchList();
   }, []);
-  */
-
-
-  // Csak inicializáláskor és akkor fut le, ha változik a counter értéke!
-  /*
-  useEffect(() => {
-    console.log('Ha figyelünk 1-1 változót, akkor a tömbbe felsoroljuk őket');
-  }, [counter]);
-  */
-
-  // Ez a típus pedig lefut inicializáláskor, és minden counter változáskor, és a végén van egy callback return block,
-  // ahol akár bizonyos helyzetekben leiratkozhatunk változókról
-  useEffect(() => {
-    console.log('Ha figyelünk 1-1 változót, akkor az alsó tömbbe felsoroljuk őket');
-    return () => {
-      console.log('Ez a blokk például leiratkozásokhoz alkalmas, leiratkozás után újra renderelődik');
-    };
-  }, [counter]);
-
 
   return (
     <div>
-      <p>Counter: {counter}</p>
-      <button onClick={increaseCounter} type="button">Add +1</button>
+
+      {/* Betöltjük a listát, amikor már letöltődött az adat, a map-nek átadjuk a renderPostot, ami megcsinál mindent */}
+      {list.length > 0 && list.map(renderPost)}
 
     </div>
   );
