@@ -7,6 +7,7 @@ class Book extends Component {
     first: 'First',
     second: 'Second',
     selectedBook: null,
+    title: this.props.book.title,
   };
 
   // Használjunk Array functiont, hogy elérjük a this-t!
@@ -29,9 +30,16 @@ class Book extends Component {
   //   console.log('Könyv:', this.props.book);
   // }
 
+  // LIFE CYCLE - HA VÁLTOZIK A STATE-BEN A TITLE KÍVÜLRŐL, AKKOR ENNEK KÖSZÖNHETŐEN MINDIG MEGKAPJA A FRISSET
+  static getDerivedStateFromProps(props) {
+    return {
+      title: props.book.title,
+    };
+  }
+
   render() {
 
-    const { title, snNumber } = this.props.book;
+    const { snNumber } = this.props.book;
 
     return (
       <div>
@@ -40,7 +48,7 @@ class Book extends Component {
         {/* VAGY PARAMÉTER NÉLKÜL: <h4 onClick={this.onClickBook}>{title}</h4> */}
 
         {/* Az onClickFunc-nel átadunk egy functiont egy másik komponensnek, amit majd a másik oldalon meghívunk! */}
-        <BookTitle title={title} onClickFunc={this.onClickBook} />
+        <BookTitle title={this.state.title} onClickFunc={this.onClickBook} />
 
         <p>{snNumber}</p>
         <hr></hr>

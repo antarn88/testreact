@@ -20,6 +20,21 @@ class BookList extends Component {
   // LIFE CYCLE: Ez pedig akkor fut le, amikor már lerenderelődött a komponens
   componentDidMount() {
     console.log('Renderelés után');
+
+    // Aszinkron módon renderelés után hozzáadtunk egy új könyvet, ezzel szimulálva egy szerverhívást
+    setTimeout(() => {
+      this.setState({
+        books: [...this.state.books, { title: 'Jason Stathem - 9 mm', snNumber: 'nhg-787' }]
+      });
+    }, 2000);
+
+    // Könyv frissítése kicsit később
+    setTimeout(() => {
+      this.setState({
+        books: this.state.books.map(book => book.title === 'Zámbó Jimmy élete' ? { ...book, title: 'Zámbó Imre élete' } : book),
+      });
+    }, 4000);
+
   }
 
   // Mindenképpen szükséges egy render function, ami visszatér egy JSX-el.
@@ -30,7 +45,7 @@ class BookList extends Component {
         <h1>Könyvek:</h1>
 
         {/* A Book komponensnek átadjuk az aktuális könyvet és kell adni még egy egyedi azonosítót is, például a key-jel */}
-        <div>{this.state.books.map((book) => <Book book={book} key={book.snNumber} />)}</div>
+        <div>{this.state.books.map((book, index) => <Book book={book} key={index} />)}</div>
 
       </div>
     );
