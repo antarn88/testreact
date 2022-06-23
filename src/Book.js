@@ -44,11 +44,14 @@ class Book extends Component {
     return (
       <div>
 
-        {/* <h4 onClick={this.onClickBook(title)}>{title}</h4> */}
-        {/* VAGY PARAMÉTER NÉLKÜL: <h4 onClick={this.onClickBook}>{title}</h4> */}
+        {/* Komponens vagy HTML elem feltételhez kötése: */}
+        {/* Ha az snNumber n-nel kezdődik, akkor jelenjen meg a BookTitle! */}
 
-        {/* Az onClickFunc-nel átadunk egy functiont egy másik komponensnek, amit majd a másik oldalon meghívunk! */}
-        <BookTitle title={this.state.title} onClickFunc={this.onClickBook} />
+
+        {/* JSX elem kapcsos közé, majd azon belül egy feltétel és egy && jel */}
+
+        {snNumber.startsWith('n') && <BookTitle title={this.state.title} onClickFunc={this.onClickBook} />}
+
 
         <p>{snNumber}</p>
         <hr></hr>
